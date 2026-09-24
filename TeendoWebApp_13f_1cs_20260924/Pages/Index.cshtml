@@ -4,7 +4,24 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1>Teendők listája</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Teendok[0].Cim)</th>
+            <th>@Html.DisplayNameFor(model => model.Teendok[0].Hatarido)</th>
+            <th>@Html.DisplayNameFor(model => model.Teendok[0].Kesz)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var teendo in Model.Teendok)
+        {
+            <tr>
+                <td>@Html.DisplayFor(model => model.Teendok[0].Cim)</td>
+                <td>@Html.DisplayFor(model => model.Teendok[0].Hatarido)</td>
+                <td>@Html.DisplayFor(model => model.Teendok[0].Kesz)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
