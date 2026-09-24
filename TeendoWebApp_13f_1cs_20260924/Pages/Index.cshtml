@@ -5,21 +5,57 @@
 }
 
 <h1>Teendők listája</h1>
+<h2>Új teendő felvétele</h2>
+<form method="post">
+    <div class="form-group">
+        <label asp-for="UjTeendo.Cim" class="control-label"></label>
+        <input asp-for="UjTeendo.Cim" class="form-control" />
+        <span asp-validation-for="UjTeendo.Cim" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="UjTeendo.Hatarido" class="control-label"></label>
+        <input asp-for="UjTeendo.Hatarido" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="UjTeendo.Kesz" class="control-label"></label>
+        <input asp-for="UjTeendo.Kesz" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Létrehozás" class="btn btn-primary" />
+    </div>
+</form>
+@if(TempData["Uzenet"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Uzenet"]
+    </div>
+}
 <table class="table">
     <thead>
         <tr>
             <th>@Html.DisplayNameFor(model => model.Teendok[0].Cim)</th>
             <th>@Html.DisplayNameFor(model => model.Teendok[0].Hatarido)</th>
             <th>@Html.DisplayNameFor(model => model.Teendok[0].Kesz)</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var teendo in Model.Teendok)
         {
-            <tr>
-                <td>@Html.DisplayFor(model => model.Teendok[0].Cim)</td>
-                <td>@Html.DisplayFor(model => model.Teendok[0].Hatarido)</td>
-                <td>@Html.DisplayFor(model => model.Teendok[0].Kesz)</td>
+            var lejart = teendo.Hatarido < DateTime.Now && !teendo.Kesz;
+            <tr class="@(lejart ? "table-danger" : "")">
+                <td>@teendo.Cim</td>
+                <td>@teendo.Hatarido</td>
+                <td><input asp-for="@teendo.Kesz"/></td>
+                <td>
+                    <form method="post" asp-page-handler="Kesz" asp-route-id="@teendo.Id">
+                        <button type="submit">@(teendo.Kesz ? "Visszaállít" : "Kész")</button>
+                    </form>
+
+                    <form method="post" asp-page-handler="Torles" asp-route-id="@teendo.Id">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Biztosan törölni szeretnéd ezt a teendőt?')">Törlés</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>
